@@ -37,6 +37,15 @@ const Home: NextPage = () => {
               </p>
             </div>
           </Link>
+
+          <Link href='./persons'>
+            <div className={styles.card}>
+              <h2>useInfiniteQuery &rarr;</h2>
+              <p>
+                Make infinite queries using <code className={styles.code}>useInfiniteQuery</code>.
+              </p>
+            </div>
+          </Link>
         </div>
       </main>
     </div>
