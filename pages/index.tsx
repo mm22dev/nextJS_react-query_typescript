@@ -28,6 +28,15 @@ const Home: NextPage = () => {
               </p>
             </div>
           </Link>
+
+          <Link href='./prefetch/person/1'>
+            <div className={styles.card}>
+              <h2>prefetchQuery &rarr;</h2>
+              <p>
+                Prefetch using <code className={styles.code}>prefetchQuery</code>.
+              </p>
+            </div>
+          </Link>
         </div>
       </main>
     </div>
