@@ -1,8 +1,25 @@
-import '../styles/globals.css'
-import type { AppProps } from 'next/app'
+import 'styles/globals.css'
 
-function MyApp({ Component, pageProps }: AppProps) {
-  return <Component {...pageProps} />
+import { FC } from 'react'
+import { AppProps } from 'next/app'
+import { QueryClientProvider, QueryClient } from 'react-query'
+import { ReactQueryDevtools } from 'react-query/devtools'
+
+const reactQueryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 5000,
+    },
+  },
+})
+
+const MyApp: FC<AppProps> = ({ Component, pageProps }: AppProps) => {
+  return (
+    <QueryClientProvider client={reactQueryClient}>
+      <ReactQueryDevtools initialIsOpen={false} />
+      <Component {...pageProps} />
+    </QueryClientProvider>
+  )
 }
 
 export default MyApp
