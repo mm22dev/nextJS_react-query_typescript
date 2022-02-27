@@ -1,7 +1,9 @@
 export interface IPerson {
   id: number
-  name: string
-  age: number
+  avatar: string
+  fullName: string
+  quote: string
+  skill: string
 }
 
 export interface IInfinitePersons {

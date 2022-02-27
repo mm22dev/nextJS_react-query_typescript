@@ -1,5 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 import { IPerson } from 'lib/interfaces/IPerson'
+import crypto from 'crypto'
+import { randAvatar, randFullName, randQuote, randSkill } from '@ngneat/falso'
 
 const NUM_OF_PERSONS_TO_FETCH = 4
 const TOTAL_NUM_OF_PERSONS = 10
@@ -21,10 +23,12 @@ export default (req: NextApiRequest, res: NextApiResponse<IPerson[] | Error>): v
                 ? TOTAL_NUM_OF_PERSONS - offset
                 : NUM_OF_PERSONS_TO_FETCH,
           },
-          (_, index) => ({
-            id: offset + index + 1,
-            name: 'John Doe',
-            age: TOTAL_NUM_OF_PERSONS - offset + index + 1,
+          () => ({
+            id: crypto.randomBytes(8).toString('hex'),
+            avatar: randAvatar(),
+            fullName: randFullName(),
+            quote: randQuote(),
+            skill: randSkill(),
           }),
         )
   res.status(200).json({
