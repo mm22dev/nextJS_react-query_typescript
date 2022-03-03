@@ -1,5 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 import { IPerson } from 'lib/interfaces/IPerson'
+import crypto from 'crypto'
 import { randAvatar, randFullName, randQuote, randSkill } from '@ngneat/falso'
 
 export default (req: NextApiRequest, res: NextApiResponse<IPerson | Error>): void => {
@@ -9,7 +10,7 @@ export default (req: NextApiRequest, res: NextApiResponse<IPerson | Error>): voi
 
   if (typeof id === 'string') {
     res.status(200).json({
-      id: parseInt(id, 10),
+      id: crypto.randomBytes(8).toString('hex'),
       avatar: randAvatar(),
       fullName: randFullName(),
       quote: randQuote(),

@@ -2,8 +2,11 @@ import { NextPage } from 'next'
 import Head from 'next/head'
 import Link from 'next/link'
 import styles from 'styles/Home.module.css'
+import crypto from 'crypto'
 
 const Home: NextPage = () => {
+  const mockPersonId = crypto.randomBytes(8).toString('hex')
+
   return (
     <div className={styles.container}>
       <Head>
@@ -20,7 +23,7 @@ const Home: NextPage = () => {
         <p className={styles.description}>Contents:</p>
 
         <div className={styles.grid} style={{ cursor: 'pointer' }}>
-          <Link href='./person/1'>
+          <Link href={`./person/${mockPersonId}`}>
             <div className={styles.card}>
               <h2>useQuery &rarr;</h2>
               <p>
@@ -29,7 +32,7 @@ const Home: NextPage = () => {
             </div>
           </Link>
 
-          <Link href='./prefetch/person/1'>
+          <Link href={`./prefetch/person/${mockPersonId}`}>
             <div className={styles.card}>
               <h2>prefetchQuery &rarr;</h2>
               <p>

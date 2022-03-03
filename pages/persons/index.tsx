@@ -69,8 +69,8 @@ const PersonPage: FC = () => {
       <div className={styles.main}>
         {data?.pages?.map(({ persons }, key) => (
           <div key={key}>
-            {persons.map(({ id, age, name }) => (
-              <PersonCard id={id} name={name} age={age} key={id} />
+            {persons.map((person) => (
+              <PersonCard key={person.id} person={person} />
             ))}
           </div>
         ))}

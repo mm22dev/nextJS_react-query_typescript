@@ -1,5 +1,5 @@
 export interface IPerson {
-  id: number
+  id: string
   avatar: string
   fullName: string
   quote: string

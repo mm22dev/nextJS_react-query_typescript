@@ -1,12 +1,12 @@
 import { NextApiRequest, NextApiResponse } from 'next'
-import { IPerson } from 'lib/interfaces/IPerson'
+import { IInfinitePersons } from 'lib/interfaces/IPerson'
 import crypto from 'crypto'
 import { randAvatar, randFullName, randQuote, randSkill } from '@ngneat/falso'
 
 const NUM_OF_PERSONS_TO_FETCH = 4
 const TOTAL_NUM_OF_PERSONS = 10
 
-export default (req: NextApiRequest, res: NextApiResponse<IPerson[] | Error>): void => {
+export default (req: NextApiRequest, res: NextApiResponse<IInfinitePersons | Error>): void => {
   const { query } = req
 
   const offset = parseInt(Array.isArray(query.offset) ? query.offset[0] : query.offset, 10) || 0

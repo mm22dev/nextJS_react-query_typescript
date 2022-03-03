@@ -45,9 +45,7 @@ const PersonPage: FC = () => {
           <a>Home</a>
         </Link>
       </header>
-      <div className={styles.main}>
-        {data && <PersonCard id={data.id} name={data.name} age={data?.age} />}
-      </div>
+      <div className={styles.main}>{data && <PersonCard person={data} />}</div>
     </div>
   )
 }
