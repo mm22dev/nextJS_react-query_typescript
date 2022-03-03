@@ -3,7 +3,7 @@ import { IPerson } from 'lib/interfaces/IPerson'
 import crypto from 'crypto'
 import { randAvatar, randFullName, randQuote, randSkill } from '@ngneat/falso'
 
-export default (req: NextApiRequest, res: NextApiResponse<IPerson | Error>): void => {
+export default function handler(req: NextApiRequest, res: NextApiResponse<IPerson | Error>): void {
   const {
     query: { id },
   } = req

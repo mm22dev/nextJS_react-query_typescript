@@ -1,11 +1,11 @@
 import { IPerson, IInfinitePersons } from 'lib/interfaces/IPerson'
 
+const protocol = process.env.NODE_ENV === 'production' ? 'https' : 'http'
+
 export const getPersonById = async (id: string | string[] | undefined): Promise<IPerson> => {
-  if (typeof id === 'string') {
-    const res = await fetch(`http://localhost:3000/api/person/${id}`)
-    return res.json()
-  }
-  throw new Error('invalid id') // need to throw because react-query functions need to have error thrown to know its in error state
+  const res = await fetch(`${protocol}://${process.env.NEXT_PUBLIC_VERCEL_URL}/api/person/${id}`)
+  if (res.ok) return res.json()
+  throw new Error('Error fetching person by id')
 }
 
 export const getInfinitePersons = async ({
@@ -15,6 +15,9 @@ export const getInfinitePersons = async ({
   size: number
   offset: number
 }): Promise<IInfinitePersons> => {
-  const res = await fetch(`http://localhost:3000/api/persons?size=${size}&offset=${offset}`)
-  return res.json()
+  const res = await fetch(
+    `${protocol}://${process.env.NEXT_PUBLIC_VERCEL_URL}/api/persons?size=${size}&offset=${offset}`,
+  )
+  if (res.ok) return res.json()
+  throw new Error('Error fetching infinite persons')
 }

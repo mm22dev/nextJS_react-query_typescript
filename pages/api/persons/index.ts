@@ -6,7 +6,10 @@ import { randAvatar, randFullName, randQuote, randSkill } from '@ngneat/falso'
 const NUM_OF_PERSONS_TO_FETCH = 4
 const TOTAL_NUM_OF_PERSONS = 10
 
-export default (req: NextApiRequest, res: NextApiResponse<IInfinitePersons | Error>): void => {
+export default function handler(
+  req: NextApiRequest,
+  res: NextApiResponse<IInfinitePersons | Error>,
+): void {
   const { query } = req
 
   const offset = parseInt(Array.isArray(query.offset) ? query.offset[0] : query.offset, 10) || 0
