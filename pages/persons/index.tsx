@@ -1,14 +1,10 @@
 // libs
 import React, { FC } from 'react'
-import { useInfiniteQuery } from 'react-query'
+// hooks
+import { personsQueryFactory, useInfinitePersons } from 'hooks/usePersons'
 // components
 import Link from 'next/link'
 import { PersonCard } from 'components/PersonCard'
-// requests
-import { getInfinitePersons } from 'queries/persons'
-// types
-import { IInfinitePersons } from 'lib/interfaces/IPerson'
-import { UseInfiniteQueryResult, QueryFunctionContext } from 'react-query'
 // styles
 import styles from 'styles/Home.module.css'
 
@@ -22,33 +18,7 @@ const PersonPage: FC = () => {
     hasNextPage,
     isError,
     error,
-  }: UseInfiniteQueryResult<IInfinitePersons, Error> = useInfiniteQuery<IInfinitePersons, Error>(
-    'persons',
-    (params: QueryFunctionContext): Promise<IInfinitePersons> => {
-      // The first time this function is called, his argument has undefined pageParam
-      // each time the getNextPageParamv is called
-      const payload = { size: params?.pageParam?.size ?? 4, offset: params?.pageParam?.offset ?? 0 }
-      return getInfinitePersons(payload)
-    },
-    {
-      refetchOnMount: false,
-      refetchOnWindowFocus: false,
-      refetchOnReconnect: false,
-      retry: false,
-      getNextPageParam: (
-        lastPage: IInfinitePersons,
-      ): { size: number; offset: number } | undefined => {
-        const { count, size, offset, persons } = lastPage
-        // set hasNextPage to false if are there no more data to fetch
-        if (offset + persons.length >= count) return
-        // otherwise send the parameters to the query function to fetch the next bunch of data
-        return {
-          size: size,
-          offset: offset + 4,
-        }
-      },
-    },
-  )
+  } = useInfinitePersons({ queryKey: personsQueryFactory.all })
 
   if (isError) return <p>Error: {error?.message}</p>
 

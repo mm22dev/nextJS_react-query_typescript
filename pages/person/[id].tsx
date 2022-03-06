@@ -1,15 +1,11 @@
 // libs
 import React, { FC } from 'react'
 import { useRouter } from 'next/router'
-import { useQuery } from 'react-query'
+// hooks
+import { personsQueryFactory, usePersons } from 'hooks/usePersons'
 // components
 import Link from 'next/link'
 import { PersonCard } from 'components/PersonCard'
-// requests
-import { getPersonById } from 'queries/persons'
-// types
-import { IPerson } from 'lib/interfaces/IPerson'
-import { UseQueryResult } from 'react-query'
 // styles
 import styles from 'styles/Home.module.css'
 
@@ -17,15 +13,11 @@ const PersonPage: FC = () => {
   const {
     query: { id },
   } = useRouter()
-  const { isLoading, isError, error, data }: UseQueryResult<IPerson, Error> = useQuery<
-    IPerson,
-    Error
-  >(['person', id], () => getPersonById(id), {
-    enabled: !!id, // enabled will stop a query from running, so will only call when id is available
-    refetchOnMount: false, // refetch every time the component is mounted
-    refetchOnWindowFocus: false,
-    refetchOnReconnect: false, // refetch after connection loss
-    retry: false,
+
+  const personId = typeof id === 'string' ? id : undefined
+  const { isLoading, isError, error, data } = usePersons({
+    queryKey: personsQueryFactory.infos,
+    personId,
   })
 
   if (isLoading) {

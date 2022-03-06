@@ -1,7 +1,9 @@
 // libs
 import React, { FC } from 'react'
 import { useRouter } from 'next/router'
-import { dehydrate, QueryClient, useQuery } from 'react-query'
+import { dehydrate, QueryClient } from 'react-query'
+// hooks
+import { personsQueryFactory, usePersons } from 'hooks/usePersons'
 // components
 import Link from 'next/link'
 import { PersonCard } from 'components/PersonCard'
@@ -9,8 +11,7 @@ import { PersonCard } from 'components/PersonCard'
 import { getPersonById } from 'queries/persons'
 // types
 import { GetServerSideProps } from 'next'
-import { IPerson } from 'lib/interfaces/IPerson'
-import { DehydratedState, UseQueryResult } from 'react-query'
+import { DehydratedState } from 'react-query'
 // styles
 import styles from 'styles/Home.module.css'
 
@@ -18,9 +19,11 @@ export const getServerSideProps: GetServerSideProps = async (
   context,
 ): Promise<{ props: { dehydratedState: DehydratedState } }> => {
   const queryClient = new QueryClient()
-  const id = context?.params?.id
+  const id = context.params?.id
 
-  await queryClient.prefetchQuery(['person', id], () => getPersonById(id))
+  if (id && typeof id === 'string') {
+    await queryClient.prefetchQuery(personsQueryFactory.infos(id), () => getPersonById(id))
+  }
 
   return {
     props: {
@@ -33,15 +36,11 @@ const PersonPage: FC = () => {
   const {
     query: { id },
   } = useRouter()
-  const { isLoading, isError, error, data }: UseQueryResult<IPerson, Error> = useQuery<
-    IPerson,
-    Error
-  >(['person', id], () => getPersonById(id), {
-    enabled: !!id, // enabled will stop a query from running, so will only call when id is available
-    refetchOnMount: false, // refetch every time the component is mounted
-    refetchOnWindowFocus: false,
-    refetchOnReconnect: false, // refetch after connection loss
-    retry: false,
+
+  const personId = typeof id === 'string' ? id : undefined
+  const { isLoading, isError, error, data } = usePersons({
+    queryKey: personsQueryFactory.infos,
+    personId,
   })
 
   if (isLoading) {
