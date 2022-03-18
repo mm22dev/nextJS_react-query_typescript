@@ -1,11 +1,12 @@
 import { IPerson, IInfinitePersons } from 'lib/interfaces/IPerson'
 import { getBaseURL } from '../../utils/urls'
+import axios from 'axios'
 
-export const getPersonById = async (id: string | string[] | undefined): Promise<IPerson> => {
-  const res = await fetch(`${getBaseURL()}/api/person/${id}`)
-  if (res.ok) return res.json()
-  throw new Error('Error fetching person by id')
-}
+export const getPersonById = async (id: string | string[] | undefined): Promise<IPerson> =>
+  axios
+    .get(`${getBaseURL()}/api/person/${id}`)
+    .then((response) => Promise.resolve(response.data))
+    .catch((error) => Promise.reject(error.response))
 
 export const getInfinitePersons = async ({
   size,
@@ -13,8 +14,8 @@ export const getInfinitePersons = async ({
 }: {
   size: number
   offset: number
-}): Promise<IInfinitePersons> => {
-  const res = await fetch(`${getBaseURL()}/api/persons?size=${size}&offset=${offset}`)
-  if (res.ok) return res.json()
-  throw new Error('Error fetching infinite persons')
-}
+}): Promise<IInfinitePersons> =>
+  axios
+    .get(`${getBaseURL()}/api/persons?size=${size}&offset=${offset}`)
+    .then((response) => Promise.resolve(response.data))
+    .catch((error) => Promise.reject(error.response))
