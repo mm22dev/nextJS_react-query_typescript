@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 import { IInfinitePersons } from 'lib/interfaces/IPerson'
+import { db } from 'mocks/db'
 import crypto from 'crypto'
-import { randAvatar, randFullName, randQuote, randSkill } from '@ngneat/falso'
 
 const NUM_OF_PERSONS_TO_FETCH = 4
 const TOTAL_NUM_OF_PERSONS = 10
@@ -26,13 +26,7 @@ export default function handler(
                 ? TOTAL_NUM_OF_PERSONS - offset
                 : NUM_OF_PERSONS_TO_FETCH,
           },
-          () => ({
-            id: crypto.randomBytes(8).toString('hex'),
-            avatar: randAvatar(),
-            fullName: randFullName(),
-            quote: randQuote(),
-            skill: randSkill(),
-          }),
+          () => db.person.create({ id: crypto.randomBytes(8).toString('hex') }),
         )
   res.status(200).json({
     size,

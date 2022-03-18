@@ -16,6 +16,6 @@ export const getInfinitePersons = async ({
   offset: number
 }): Promise<IInfinitePersons> =>
   axios
-    .get(`${getBaseURL()}/api/persons?size=${size}&offset=${offset}`)
+    .get(`${getBaseURL()}/api/persons`, { params: { size, offset } })
     .then((response) => Promise.resolve(response.data))
     .catch((error) => Promise.reject(error.response))
