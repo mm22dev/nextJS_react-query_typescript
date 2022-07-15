@@ -1,6 +1,6 @@
 import { IPerson, IInfinitePersons } from 'lib/interfaces/IPerson'
 
-const protocol = process.env.NODE_ENV === 'production' ? 'https' : 'http'
+const protocol = process.env.NEXT_PUBLIC_VERCEL_ENV === 'production' ? 'https' : 'http'
 
 export const getPersonById = async (id: string | string[] | undefined): Promise<IPerson> => {
   const res = await fetch(`${protocol}://${process.env.NEXT_PUBLIC_VERCEL_URL}/api/person/${id}`)
